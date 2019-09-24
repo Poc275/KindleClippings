@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Airtable from 'airtable';
 import moment from 'moment';
+import pluralize from 'pluralize';
 
 class App extends Component {
   // initialise state
@@ -61,6 +62,9 @@ class App extends Component {
       if(content.split(' ').length === 1) {
         // remove trailing grammar from single words that are sometimes part of the clipping
         content = content.replace(/[.,!;:'"“”‘’()]/g, '');
+        // get singular version of word as plural definitions aren't very useful
+        // e.g. tests = plural of test etc.
+        content = pluralize.isPlural(content) ? pluralize.singular(content) : content;
         this.getDefinition(content);
       }
 
@@ -121,7 +125,7 @@ class App extends Component {
       // parse xml
       return new DOMParser().parseFromString(xml, "text/xml");
     }).then(data => {
-      console.log(data);
+      // console.log(data);
       const book = data.getElementsByTagName('book')[0];
       this.setState({
         bookImage: book.getElementsByTagName('image_url')[0].childNodes[0].nodeValue
