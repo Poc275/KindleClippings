@@ -76,7 +76,7 @@
   }
 
   .book-meta-col {
-    padding: 0;
+    padding: 0 1rem 0 0;
     display: block;
     text-align: left;
     float: left;
@@ -90,5 +90,11 @@
   img {
     float: right;
     width: 38.2%;
-  }  
+    padding: 0 0 0 1rem;
+  }
+
+  .clipping-info {
+    text-align: left;
+    font-size: smaller;
+  }
 }
