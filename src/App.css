@@ -28,7 +28,7 @@
 .col {
   width: 61.8%;
   padding: 2rem;
-  border-right: 1px solid white;
+  border-right: 1px solid rgba(255, 255, 255, 0.6);
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -47,4 +47,48 @@
 .content {
   font-size: calc(16px + 2vmin);
   font-weight: 400;
+}
+
+
+/* Mobile Styles */
+@media only screen and (max-width: 500px) {
+  * {
+    box-sizing: border-box;
+  }
+
+  .main {
+    display: block;
+    padding: 2rem;
+    /* width: 100%; */
+  }
+
+  .col {
+    width: 100%;
+    justify-content: stretch;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+    padding: 2rem 0;
+  }
+
+  .book-col {
+    width: 100%;
+    padding: 2rem 0;
+  }
+
+  .book-meta-col {
+    padding: 0;
+    display: block;
+    text-align: left;
+    float: left;
+    width: 61.8%;
+  }
+
+  .justify-end {
+    text-align: left;
+  }
+
+  img {
+    float: right;
+    width: 38.2%;
+  }  
 }
