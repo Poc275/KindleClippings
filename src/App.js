@@ -23,11 +23,12 @@ class App extends Component {
       new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('appwgp8cnAsLIUpuI'),
       new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('app2XCAIl9QhJYPkr'),
       new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('appwADT4du02NZBMU'),
-      new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('appm6jVVBaS1DeQJC')
+      new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('appm6jVVBaS1DeQJC'),
+      new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('appklQU840y2TrAy8')
     ];
  
     // pick a random base
-    const basePick = bases[Math.floor(Math.random() * Math.floor(4))];
+    const basePick = bases[Math.floor(Math.random() * Math.floor(bases.length))];
 
     // get the max number of records in the base
     basePick('Clippings').select({
