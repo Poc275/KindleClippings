@@ -101,13 +101,15 @@ class Book extends Component {
                     const definition = await this.getDefinition(content);
 
                     // update state with the definition
-                    this.setState(prevState => ({
-                        clippings: prevState.clippings.map(prevClipping => (
-                            // if clipping id matches the clipping with definition id then update 
-                            // the definition property, otherwise just keep the same clipping
-                            prevClipping.id === clipping.id ? { ...prevClipping, definition: definition } : prevClipping
-                        ))
-                    }));
+                    if(definition) {
+                        this.setState(prevState => ({
+                            clippings: prevState.clippings.map(prevClipping => (
+                                // if clipping id matches the clipping with definition id then update 
+                                // the definition property, otherwise just keep the same clipping
+                                prevClipping.id === clipping.id ? { ...prevClipping, definition: definition } : prevClipping
+                            ))
+                        }));
+                    }
                 }, definitionCount++ * 10000);
             }
         });

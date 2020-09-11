@@ -20,7 +20,7 @@ class Home extends Component {
         books.forEach(async book => {
             // check cache before fetching book info
             if(sessionStorage.getItem(book.goodreadsId)) {
-                console.log('Reading book from cache!');
+                // console.log('Reading book from cache!');
                 const parsedBook = JSON.parse(sessionStorage.getItem(book.goodreadsId));
                 this.setState({
                     books: [...this.state.books, parsedBook]
@@ -28,7 +28,7 @@ class Home extends Component {
 
             } else {
                 // book not in cache, make API call
-                console.log('Reading book from API');
+                // console.log('Reading book from API');
                 const bookInfo = await this.getBookInfo(book.goodreadsId);
                 // console.log(bookInfo);
 
