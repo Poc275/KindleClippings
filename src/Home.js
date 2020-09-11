@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Airtable from 'airtable';
 
 class Home extends Component {
@@ -42,6 +42,7 @@ class Home extends Component {
                     const bookWithInfo = {
                         id: bookInfo.getElementsByTagName("id")[0].childNodes[0].nodeValue,
                         title: bookInfo.getElementsByTagName("title")[0].childNodes[0].nodeValue,
+                        originalTitle: book.title,
                         author: bookInfo.getElementsByTagName("authors")[0].getElementsByTagName("author")[0].getElementsByTagName("name")[0].childNodes[0].nodeValue,
                         image: bookInfo.getElementsByTagName('image_url')[0].childNodes[0].nodeValue,
                         // year: bookInfo.getElementsByTagName("publication_year")[0].childNodes[0].nodeValue,
