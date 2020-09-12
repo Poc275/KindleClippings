@@ -6,6 +6,8 @@ import Home from './Home';
 import Book from './Book';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import './custom.scss';
+import typography from './typography';
 
 ReactDOM.render(
     <Router>

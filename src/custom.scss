@@ -1,0 +1,17 @@
+/* custom bootstrap styles */
+/* variable names courtesy of https://bootstrapshuffle.com/ */
+$body-bg: #282C34;
+$body-color: #FFFFFE;
+$font-family-base: "CrimsonText, serif";
+
+/* import bootstrap after changes to apply them */
+/* just the parts of bootstrap required to prevent conflicts with typography.js */
+/* mandatory */
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+
+/* optional */
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/grid";
+// @import "../node_modules/bootstrap/scss/type";

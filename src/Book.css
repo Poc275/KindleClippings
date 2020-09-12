@@ -1,0 +1,46 @@
+#content {
+    position: relative;
+    top: -50px;
+}
+
+#hero-col {
+    /* remove bootstrap col padding */
+    padding-right: 0;
+    padding-left: 0;
+}
+
+#hero-img {
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.book-meta {
+    font-size: smaller;
+}
+
+.clipping-block {
+    margin: 0 0 2rem;
+}
+
+.clipping {
+    border-left: 5px solid #EEBBC3;
+    padding-left: 0.975rem;
+}
+
+.definition,
+.definition-source {
+    font-size: smaller;
+}
+
+.definition-source {
+    font-style: italic;
+}
+
+.clipping-meta,
+.clipping-meta cite {
+    text-align: right;
+    font-size: 16px;
+    color: #b8c1ec;
+}

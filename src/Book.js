@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import Airtable from 'airtable';
 import moment from 'moment';
 import pluralize from 'pluralize';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faQuoteLeft, faBook } from '@fortawesome/free-solid-svg-icons';
+import { faClock } from '@fortawesome/free-regular-svg-icons';
+import './Book.css';
 
 class Book extends Component {
     constructor() {
@@ -36,7 +43,7 @@ class Book extends Component {
                             clippings: [...this.state.clippings, {
                                 id: record.get('Id'),
                                 content: record.get('Content').trim(),
-                                highlighted: 'Clipped on ' + moment(record.get('Created').trim(), 'MM/DD/YYYY h:mm a').format('dddd, MMMM Do YYYY @ h:mm a'),
+                                highlighted: moment(record.get('Created').trim(), 'MM/DD/YYYY h:mm a').format('dddd, MMMM Do YYYY @ h:mm a'),
                                 pages: this.calculatePageNumber(record.get('Location').trim()),
                                 definition: null
                             }]
@@ -139,30 +146,79 @@ class Book extends Component {
     }
 
     render() {
+        // reformat the first and last clipping date to display date range the clippings were made
+        const datesRead = this.state.clippings.length > 0 ? 
+            moment(this.state.clippings[0].highlighted, "dddd, MMMM Do YYYY @ h:mm a").format("MMM Do YYYY") + " to " + 
+            moment(this.state.clippings[this.state.clippings.length - 1].highlighted, "ddd, MMMM Do YYYY @ h:mm a").format("MMM Do YYYY")
+            : null;
+
+        // get the book image URL which will be the book title without any punctuation or spaces
+        const bookImageUrl = this.props.location.state.book.originalTitle.replaceAll(' ', '_').replace(/[.,!;:'"“”‘’()]/g, '');
+        console.log(bookImageUrl);
+
         return (
             <>
-                <h1>{this.props.location.state.book.title}</h1>
-                <h3>{this.props.location.state.book.author}</h3>
-                <h6>{this.props.location.state.book.originalTitle}</h6>
-                <img src={this.props.location.state.book.image} alt="Book cover" />
-                <p dangerouslySetInnerHTML={{ __html: this.props.location.state.book.description}}></p>
+                <Container fluid>
+                    <Row>
+                        <Col id="hero-col">
+                            <div id="hero-img" 
+                                style={{ backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(40, 44, 52, 1)), 
+                                    url(${process.env.PUBLIC_URL}/img/hires-covers/${bookImageUrl}.jpg` }}>
+                            </div>
+                        </Col>
+                    </Row>
+                </Container>
 
-                <h4>Clippings</h4>
-                {
-                    this.state.clippings.map(clipping => (
-                        <React.Fragment key={clipping.id}>
-                            <p>{clipping.content}</p>
-                            {clipping.definition ? 
-                                <>
-                                    <p dangerouslySetInnerHTML={{ __html: clipping.definition.definition}}></p> 
-                                    <p dangerouslySetInnerHTML={{ __html: clipping.definition.definitionSource}}></p>
-                                </>
-                                : null
-                            }
-                            <p>{clipping.highlighted} - {clipping.pages}</p>
-                        </React.Fragment>
-                    ))
-                }
+                <Container id="content">
+                    <Row>
+                        <Col xs="auto">
+                            <img src={this.props.location.state.book.image} alt="Book cover" />
+                        </Col>
+                        <Col>
+                            <h1>{this.props.location.state.book.title}</h1>
+                            <h2>by {this.props.location.state.book.author}</h2>
+                            <p className="book-meta">
+                                <FontAwesomeIcon icon={faBook} /><span> </span>
+                                {pluralize('Clipping', this.state.clippings.length, true)}
+                            </p>
+                            <p className="book-meta">
+                                <FontAwesomeIcon icon={faClock} /><span> </span>
+                                {datesRead}
+                            </p>
+                            {/* <h6>{this.props.location.state.book.originalTitle}</h6> */}
+                            <p dangerouslySetInnerHTML={{ __html: this.props.location.state.book.description}}></p>
+                        </Col>
+                    </Row>
+
+                    <hr />
+
+                    <Row>
+                        {
+                            this.state.clippings.map(clipping => (
+                                <Col xs={12} key={clipping.id}>
+                                    <blockquote className="clipping-block">
+                                        <div className="clipping">
+                                            <p><FontAwesomeIcon icon={faQuoteLeft} size="xs" /> {clipping.content}</p>
+                                            {clipping.definition ? 
+                                                <>
+                                                    <p className="definition" 
+                                                        dangerouslySetInnerHTML={{ __html: clipping.definition.definition}}></p> 
+                                                    <p className="definition-source" 
+                                                        dangerouslySetInnerHTML={{ __html: clipping.definition.definitionSource}}></p>
+                                                </>
+                                                : null
+                                            }
+                                        </div>
+
+                                        <footer className="clipping-meta">
+                                            Clipped on {clipping.highlighted} <cite title="pages">{clipping.pages}</cite>
+                                        </footer>
+                                    </blockquote>
+                                </Col>
+                            ))
+                        }
+                    </Row>
+                </Container>
             </>
         );
     }
