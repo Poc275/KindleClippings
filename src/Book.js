@@ -39,16 +39,19 @@ class Book extends Component {
                     filterByFormula: `SEARCH("${this.props.location.state.book.originalTitle}", {Title})`
                 }).eachPage((records, fetchNextPage) => {
                     records.forEach(async record => {
-                        this.setState({
-                            clippings: [...this.state.clippings, {
-                                id: record.get('Id'),
-                                content: record.get('Content').trim(),
-                                highlighted: moment(record.get('Created').trim(), 'MM/DD/YYYY h:mm a').format('dddd, MMMM Do YYYY @ h:mm a'),
-                                pages: this.calculatePageNumber(record.get('Location').trim()),
-                                definition: null
-                            }]
-                        });
-                    })
+                        // Airtable SEARCH isn't an exact match, so double check it
+                        if(record.get('Title') === this.props.location.state.book.originalTitle) {
+                            this.setState({
+                                clippings: [...this.state.clippings, {
+                                    id: record.get('Id'),
+                                    content: record.get('Content').trim(),
+                                    highlighted: moment(record.get('Created').trim(), 'MM/DD/YYYY h:mm a').format('dddd, MMMM Do YYYY @ h:mm a'),
+                                    pages: this.calculatePageNumber(record.get('Location').trim()),
+                                    definition: null
+                                }]
+                            });
+                        }
+                    });
 
                     fetchNextPage();
                 }, (err) => {
@@ -153,7 +156,7 @@ class Book extends Component {
             : null;
 
         // get the book image URL which will be the book title without any punctuation or spaces
-        const bookImageUrl = this.props.location.state.book.originalTitle.replaceAll(' ', '_').replace(/[.,!;:'"“”‘’()]/g, '');
+        const bookImageUrl = this.props.location.state.book.originalTitle.replaceAll(' ', '_').replace(/[.,!;:'"“”‘’()?]/g, '');
         console.log(bookImageUrl);
 
         return (
@@ -163,7 +166,7 @@ class Book extends Component {
                         <Col id="hero-col">
                             <div id="hero-img" 
                                 style={{ backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(40, 44, 52, 1)), 
-                                    url(${process.env.PUBLIC_URL}/img/hires-covers/${bookImageUrl}.jpg` }}>
+                                    url(https://kindleclippings.blob.core.windows.net/hires-book-covers/${bookImageUrl}.jpg` }}>
                             </div>
                         </Col>
                     </Row>
