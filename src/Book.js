@@ -22,6 +22,9 @@ class Book extends Component {
     };
 
     componentDidMount() {
+        // scroll to the top when navigating to this route
+        window.scrollTo(0, 0);
+
         const bases = [
             new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('appwgp8cnAsLIUpuI'),
             new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('app2XCAIl9QhJYPkr'),
@@ -71,6 +74,13 @@ class Book extends Component {
             this.checkForDefinitions();
         });
     }
+
+    // componentDidUpdate(prevProps) {
+    //     // make sure we're scrolled to the top of the page when navigating to this route
+    //     if(this.props.location.pathname !== prevProps.location.pathname) {
+    //         window.scrollTo(0, 0);
+    //     }
+    // }
 
     componentWillUnmount() {
         // kill any outstanding fetch requests to prevent updating 
@@ -193,7 +203,7 @@ class Book extends Component {
                         </Col>
                     </Row>
 
-                    <hr />
+                    <hr className="divider" />
 
                     <Row>
                         {

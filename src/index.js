@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // import './index.css';
-// import App from './App';
+import Random from './Random';
 import Home from './Home';
 import Book from './Book';
 import * as serviceWorker from './serviceWorker';
@@ -13,6 +13,7 @@ ReactDOM.render(
     <Router>
         <Route exact path='/' component={Home} />
         <Route path='/book/:bookId' component={Book} />
+        <Route exact path='/random' component={Random} />
     </Router>, 
     document.getElementById('root')
 );

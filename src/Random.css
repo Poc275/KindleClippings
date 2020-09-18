@@ -1,31 +1,24 @@
-.main {
-  padding: 3rem;
-  background-color: #282c34;
-  min-height: 100vh;
+#random-main {
   display: flex;
+  padding: 3rem;
+  min-height: 100vh;
   align-items: center;
-  color: white;
-  font-weight: 300;
 }
 
-.book-col {
+#random-book-col {
   display: flex;
   align-items: center;
   width: 38.2%;
 }
 
-.book-meta-col {
+#random-book-meta-col {
   flex-direction: column;
   text-align: right;
   display: flex;
   padding: 0 1rem;
 }
 
-.justify-end {
-  text-align: end;
-}
-
-.col {
+#random-clipping-col {
   width: 61.8%;
   padding: 2rem;
   border-right: 1px solid rgba(255, 255, 255, 0.6);
@@ -34,35 +27,36 @@
   text-align: left;
 }
 
-.clipping-info {
+.random-justify-end {
+  text-align: end;
+}
+
+#random-clipping-info {
   margin-top: 3rem;
   text-align: end;
 }
 
-.definition-source {
-  font-weight: 300;
+#random-definition-source {
   font-style: italic;
 }
 
-.content {
+#random-content {
   font-size: calc(16px + 2vmin);
-  font-weight: 400;
 }
 
 
 /* Mobile Styles */
 @media only screen and (max-width: 500px) {
-  * {
+  /* * {
     box-sizing: border-box;
-  }
+  } */
 
-  .main {
+  #random-main {
     display: block;
     padding: 2rem;
-    /* width: 100%; */
   }
 
-  .col {
+  #random-clipping-col {
     width: 100%;
     justify-content: stretch;
     border-right: none;
@@ -70,12 +64,12 @@
     padding: 2rem 0;
   }
 
-  .book-col {
+  #random-book-col {
     width: 100%;
     padding: 2rem 0;
   }
 
-  .book-meta-col {
+  #random-book-meta-col {
     padding: 0 1rem 0 0;
     display: block;
     text-align: left;
@@ -83,17 +77,17 @@
     width: 61.8%;
   }
 
-  .justify-end {
+  .random-justify-end {
     text-align: left;
   }
 
-  img {
+  #random-img {
     float: right;
     width: 38.2%;
     padding: 0 0 0 1rem;
   }
 
-  .clipping-info {
+  #random-clipping-info {
     text-align: left;
     font-size: smaller;
   }

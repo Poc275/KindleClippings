@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Airtable from 'airtable';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Image from 'react-bootstrap/Image';
+import Button from 'react-bootstrap/Button';
+import './Home.css';
 
 class Home extends Component {
     constructor() {
@@ -121,21 +127,56 @@ class Home extends Component {
     }
 
     render() {
+        const alphabet = ["0-9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+
         return (
-            <>
+            <Container>
+                <h1>Kindle Clippings</h1>
+                <p>This site contains all of my Kindle clippings. For more information about this project please visit <a href="https://poc275.me/kindle-clippings">my site</a>.</p>
+                <p>Made with <a href="https://www.clippings.io/">Clippings.io</a>, <a href="https://www.goodreads.com/">Goodreads</a> and <a href="https://developer.wordnik.com/">Wordnik</a>.</p>
+                <p>View clippings per book below or get a random clipping by clicking the button.</p>
+
+                <Button variant="primary" href="/random">Random Clipping!</Button>
+
                 {
-                    this.state.books.map(book => (
-                        <Link 
-                            key={book.id} 
-                            to={{
-                                pathname: `/book/${book.title}`,
-                                state: { book: book }
-                            }}>
-                                <img src={book.image} alt="Book cover" title={book.title + ' - ' + book.author} style={{ height: '98px', padding: 0, margin: 0 }} />
-                        </Link>
-                    ))
+                    // display books by first letter
+                    alphabet.map(letter => {
+                        let filteredBooks = [];
+
+                        if(letter === "0-9") {
+                            // group books starting with a number together
+                            filteredBooks = this.state.books.filter(({ title }) => {
+                                return title.substr(0, 1).match(/[0-9]/g)
+                            });
+                        } else {
+                            filteredBooks = this.state.books.filter(({ title }) => title.startsWith(letter));
+                        }
+
+                        return (
+                            filteredBooks.length > 0 ? 
+                                <Row key={letter} className="letter-row">
+                                    <Col>
+                                        <h2 className="letter-heading"><span className="letter-heading-text">{letter}</span></h2>
+                                        {
+                                            filteredBooks.map(book => (
+                                                <Link 
+                                                    key={book.id} 
+                                                    to={{
+                                                        pathname: `/book/${book.title}`,
+                                                        state: { book: book }
+                                                    }}>
+                                                        {/* <img src={book.image} alt="Book cover" title={book.title + ' - ' + book.author} style={{ height: '98px', padding: 0, margin: 0 }} /> */}
+                                                        <Image className="book-cover" src={book.image} alt="Book cover" title={book.title} />
+                                                </Link>
+                                            ))
+                                        }
+                                    </Col>
+                                </Row>
+                            : null
+                        )
+                    })
                 }
-            </>
+            </Container>
         );
     }
 }

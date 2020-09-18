@@ -25,6 +25,14 @@ const typography = new Typography({
         },
         'footer cite': {
             color: "#FFFFFE",
+        },
+        '@media only screen and (max-width: 480px)': {
+            blockquote: {
+                color: "#FFFFFE",
+                fontStyle: "normal",
+                paddingLeft: 0,
+                borderLeft: "none",
+            }
         }
         // hr: {
         //     borderTop: "1px solid #b8c1ec",

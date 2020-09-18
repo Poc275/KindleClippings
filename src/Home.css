@@ -1,0 +1,16 @@
+.book-cover {
+    height: 148px;
+    margin-right: 1rem;
+}
+
+.letter-row {
+    margin: 1rem 0;
+}
+
+.letter-heading {
+    margin-bottom: 1rem;
+}
+
+.letter-heading-text {
+    border-bottom: 5px solid #eebbc3;
+}

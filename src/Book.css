@@ -43,4 +43,10 @@
     text-align: right;
     font-size: 16px;
     color: #b8c1ec;
+    margin-top: 1rem;
+}
+
+.divider {
+    border: none;
+    margin: 2rem 0;
 }

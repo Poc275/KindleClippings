@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import './App.css';
+import './Random.css';
 import Airtable from 'airtable';
 import moment from 'moment';
 import pluralize from 'pluralize';
 
-class App extends Component {
+class Random extends Component {
   // initialise state
   state = {
     title: null,
@@ -152,26 +152,26 @@ class App extends Component {
 
   render() {
     return (
-      <div className="main">
-        <div className="col">
-          <p className="content">{this.state.content}</p>
+      <div id="random-main">
+        <div id="random-clipping-col">
+          <p id="random-content">{this.state.content}</p>
           {/* <p>{this.state.definition}</p> */}
           <p dangerouslySetInnerHTML={{__html: this.state.definition}}></p>
-          <p className="definition-source">{this.state.definitionSource}</p>
-          <p className="clipping-info">{this.state.highlighted}</p>
+          <p id="random-definition-source">{this.state.definitionSource}</p>
+          <p id="random-clipping-info">{this.state.highlighted}</p>
         </div>
 
-        <div className="book-col">
-          <div className="book-meta-col">
+        <div id="random-book-col">
+          <div id="random-book-meta-col">
             <p>{this.state.title}</p>
-            <p className="justify-end">&mdash; {this.state.author}</p>
-            <small className="justify-end">{this.state.pages}</small>
+            <p className="random-justify-end">&mdash; {this.state.author}</p>
+            <small className="random-justify-end">{this.state.pages}</small>
           </div>
-          {this.state.bookImage ? <img src={this.state.bookImage} alt="Book cover" /> : null}
+          {this.state.bookImage ? <img src={this.state.bookImage} alt="Book cover" id="random-img" /> : null}
         </div>
       </div>
     );
   }
 }
 
-export default App;
+export default Random;
