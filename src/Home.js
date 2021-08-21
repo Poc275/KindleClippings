@@ -149,7 +149,13 @@ class Home extends Component {
                                 return title.substr(0, 1).match(/[0-9]/g)
                             });
                         } else {
-                            filteredBooks = this.state.books.filter(({ title }) => title.startsWith(letter));
+                            filteredBooks = this.state.books.filter(({ title }) => {
+                                // if book starts 'The ' (4 character substring) then put it in the shelf the next word begins with
+                                if(title.startsWith('The')) {
+                                    return title.substring(4).startsWith(letter)
+                                }
+                                return title.startsWith(letter)
+                            });
                         }
 
                         return (
