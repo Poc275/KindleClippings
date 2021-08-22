@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Airtable from 'airtable';
 import moment from 'moment';
 import pluralize from 'pluralize';
 import Container from 'react-bootstrap/Container';
@@ -8,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuoteLeft, faBook } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
+import bases from './Bases';
 import './Book.css';
 
 class Book extends Component {
@@ -24,15 +24,6 @@ class Book extends Component {
     componentDidMount() {
         // scroll to the top when navigating to this route
         window.scrollTo(0, 0);
-
-        const bases = [
-            new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('appwgp8cnAsLIUpuI'),
-            new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('app2XCAIl9QhJYPkr'),
-            new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('appwADT4du02NZBMU'),
-            new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('appm6jVVBaS1DeQJC'),
-            new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('appklQU840y2TrAy8'),
-            new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('app92pxeMLKnwiZrQ')
-        ];
         
         const promises = bases.map(base => {
             return new Promise((resolve, reject) => {

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './Random.css';
-import Airtable from 'airtable';
 import moment from 'moment';
 import pluralize from 'pluralize';
+import bases from './Bases';
 
 class Random extends Component {
   // initialise state
@@ -19,14 +19,6 @@ class Random extends Component {
 
   componentDidMount() {
     const self = this;
-    const bases = [
-      new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('appwgp8cnAsLIUpuI'),
-      new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('app2XCAIl9QhJYPkr'),
-      new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('appwADT4du02NZBMU'),
-      new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('appm6jVVBaS1DeQJC'),
-      new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('appklQU840y2TrAy8'),
-      new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('app92pxeMLKnwiZrQ')
-    ];
  
     // pick a random base
     const basePick = bases[Math.floor(Math.random() * Math.floor(bases.length))];
