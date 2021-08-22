@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import './Random.css';
 import moment from 'moment';
 import pluralize from 'pluralize';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faQuoteLeft } from '@fortawesome/free-solid-svg-icons';
 import bases from './Bases';
 import Utilities from './Util';
 
@@ -14,8 +19,7 @@ class Random extends Component {
     pages: null,
     content: null,
     definition: null,
-    definitionSource: null,
-    bookImage: null
+    definitionSource: null
   };
 
   componentDidMount() {
@@ -66,14 +70,13 @@ class Random extends Component {
       // get book info
       const bookTitle = records[0].get('Title').trim();
       const bookAuthor = records[0].get('Author').trim();
-      this.getBookInfo(bookTitle, bookAuthor);
 
       this.setState({
         title: bookTitle,
         author: bookAuthor,
-        highlighted: 'Clipped on ' + moment(records[0].get('Created').trim(), 'MM/DD/YYYY h:mm a').format('dddd, MMMM Do YYYY @ h:mm a'),
+        highlighted: moment(records[0].get('Created').trim(), 'MM/DD/YYYY h:mm a').format('dddd, MMMM Do YYYY @ h:mm a'),
         pages: Utilities.calculatePageNumber(records[0].get('Location').trim()),
-        content: '“' + content
+        content: content
       });
     });
   }
@@ -100,59 +103,38 @@ class Random extends Component {
     });
   }
 
-  // call the Goodreads API for book information
-  getBookInfo(title, author) {
-    const key = process.env.REACT_APP_GOODREADS_API_KEY;
-    const uriAuthor = encodeURIComponent(author);
-    const uriTitle = encodeURIComponent(title);
-    // Goodreads API doesn't allow CORS so I've setup a proxy backend Azure Function App
-    // which forwards to the actual Goodreads API
-    const url = `https://goodreads-proxy.azurewebsites.net/book/${uriAuthor}/${uriTitle}/${key}`;
-
-    fetch(url)
-      .then(res => {
-        if(res.ok) {
-          return res.text();
-        }
-        console.error(res);
-        return null;
-    }).then(xml => {
-      // parse xml
-      return new DOMParser().parseFromString(xml, "text/xml");
-    }).then(data => {
-      // console.log(data);
-      const book = data.getElementsByTagName('book')[0];
-      this.setState({
-        bookImage: book.getElementsByTagName('image_url')[0].childNodes[0].nodeValue
-      });
-    }).catch(err => {
-      console.error('Error calling the Goodreads API: ', err.message);
-      this.setState({
-        bookImage: null
-      });
-    });
-  }
-
   render() {
     return (
-      <div id="random-main">
-        <div id="random-clipping-col">
-          <p id="random-content">{this.state.content}</p>
-          {/* <p>{this.state.definition}</p> */}
-          <p dangerouslySetInnerHTML={{__html: this.state.definition}}></p>
-          <p id="random-definition-source">{this.state.definitionSource}</p>
-          <p id="random-clipping-info">{this.state.highlighted}</p>
-        </div>
+      <Container id="random-container">
+        <Row>
+          <Col sm={2} className="d-none d-sm-block">
+            <img src={this.state.title ? Utilities.getBookCoverUrl(this.state.title) : null} 
+              alt="book cover"
+              title={`${this.state.title} by ${this.state.author}`} />
+          </Col>
 
-        <div id="random-book-col">
-          <div id="random-book-meta-col">
-            <p>{this.state.title}</p>
-            <p className="random-justify-end">&mdash; {this.state.author}</p>
-            <small className="random-justify-end">{this.state.pages}</small>
-          </div>
-          {this.state.bookImage ? <img src={this.state.bookImage} alt="Book cover" id="random-img" /> : null}
-        </div>
-      </div>
+          <Col xs={12} sm={10}>
+            <blockquote className="clipping-block">
+              <div className="clipping">
+                <p><FontAwesomeIcon icon={faQuoteLeft} size="xs" /> {this.state.content}</p>
+                {this.state.definition ? 
+                  <>
+                    <p className="definition" 
+                        dangerouslySetInnerHTML={{ __html: this.state.definition}}></p> 
+                    <p className="definition-source" 
+                        dangerouslySetInnerHTML={{ __html: this.state.definitionSource}}></p>
+                  </>
+                  : null
+                }
+              </div>
+
+              <footer className="clipping-meta">
+                {this.state.title} | Clipped on {this.state.highlighted} <cite title="pages">{this.state.pages}</cite>
+              </footer>
+            </blockquote>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }
