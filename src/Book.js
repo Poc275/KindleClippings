@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuoteLeft, faBook } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 import bases from './Bases';
+import Utilities from './Util';
 import './Book.css';
 
 class Book extends Component {
@@ -41,7 +42,7 @@ class Book extends Component {
                                     id: record.get('Id'),
                                     content: record.get('Content').trim(),
                                     highlighted: moment(record.get('Created').trim(), 'MM/DD/YYYY h:mm a').format('dddd, MMMM Do YYYY @ h:mm a'),
-                                    pages: this.calculatePageNumber(record.get('Location').trim()),
+                                    pages: Utilities.calculatePageNumber(record.get('Location').trim()),
                                     definition: null
                                 }]
                             });
@@ -78,17 +79,6 @@ class Book extends Component {
         // kill any outstanding fetch requests to prevent updating 
         // state on an unmounted component if we navigate away from the home page
         this.controller.abort();
-    }
-
-    // function which calculates the correct page number from the kindle location
-    calculatePageNumber(location) {
-        const locations = location.split('-');
-        
-        // locations will either be a single element for a single page or two elements for a range of pages.
-        // Actual page number = kindle location / 16.69
-        // Source: https://www.reddit.com/r/kindle/comments/2528dl/kindle_location_to_relative_page_number_with_a/
-        const page = Math.floor(parseInt(locations[0], 10) / 16.69);
-        return `p. ${page}`;
     }
 
     // function which checks if any clippings need a definition retrieving 
@@ -157,8 +147,8 @@ class Book extends Component {
             moment(this.state.clippings[this.state.clippings.length - 1].highlighted, "ddd, MMMM Do YYYY @ h:mm a").format("MMM Do YYYY")
             : null;
 
-        // get the book image URL which will be the book title without any punctuation or spaces
-        const bookImageUrl = this.props.location.state.book.originalTitle.replaceAll(' ', '_').replace(/[.,!;:'"“”‘’()?]/g, '');
+        // get the book image URL
+        const bookImageUrl = Utilities.getBookCoverUrl(this.props.location.state.book.originalTitle);
         console.log(bookImageUrl);
 
         return (
@@ -167,8 +157,7 @@ class Book extends Component {
                     <Row>
                         <Col id="hero-col">
                             <div id="hero-img" 
-                                style={{ backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(40, 44, 52, 1)), 
-                                    url(https://kindleclippings.blob.core.windows.net/hires-book-covers/${bookImageUrl}.jpg` }}>
+                                style={{ backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(40, 44, 52, 1)), url(${bookImageUrl}` }}>
                             </div>
                         </Col>
                     </Row>

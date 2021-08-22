@@ -3,6 +3,7 @@ import './Random.css';
 import moment from 'moment';
 import pluralize from 'pluralize';
 import bases from './Bases';
+import Utilities from './Util';
 
 class Random extends Component {
   // initialise state
@@ -71,7 +72,7 @@ class Random extends Component {
         title: bookTitle,
         author: bookAuthor,
         highlighted: 'Clipped on ' + moment(records[0].get('Created').trim(), 'MM/DD/YYYY h:mm a').format('dddd, MMMM Do YYYY @ h:mm a'),
-        pages: this.calculatePageNumber(records[0].get('Location').trim()),
+        pages: Utilities.calculatePageNumber(records[0].get('Location').trim()),
         content: '“' + content
       });
     });
@@ -130,17 +131,6 @@ class Random extends Component {
         bookImage: null
       });
     });
-  }
-
-  // function which calculates the correct page number from the kindle location
-  calculatePageNumber(location) {
-    const locations = location.split('-');
-    
-    // locations will either be a single element for a single page or two elements for a range of pages.
-    // Actual page number = kindle location / 16.69
-    // Source: https://www.reddit.com/r/kindle/comments/2528dl/kindle_location_to_relative_page_number_with_a/
-    const page = Math.floor(parseInt(locations[0], 10) / 16.69);
-    return `p. ${page}`;
   }
 
   render() {
