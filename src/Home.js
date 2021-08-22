@@ -6,6 +6,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
 import './Home.css';
 
 class Home extends Component {
@@ -16,7 +18,8 @@ class Home extends Component {
     }
 
     state = {
-        books: []
+        books: [],
+        searchString: ""
     };
 
     async componentDidMount() {
@@ -126,17 +129,41 @@ class Home extends Component {
         });
     }
 
+    searchInputOnChange = (event) => {
+        this.setState({
+            searchString: event.target.value
+        });
+    }
+
     render() {
         const alphabet = ["0-9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
         return (
-            <Container>
+            <Container className="mt-3">
                 <h1>Kindle Clippings</h1>
-                <p>This site contains all of my Kindle clippings. For more information about this project please visit <a href="https://poc275.me/kindle-clippings">my site</a>.</p>
+                <p>This site contains all of my Kindle clippings. For more information about this project please visit <a href="https://poc275.me/kindle-clippings">my portfolio</a>.</p>
                 <p>Made with <a href="https://www.clippings.io/">Clippings.io</a>, <a href="https://www.goodreads.com/">Goodreads</a> and <a href="https://developer.wordnik.com/">Wordnik</a>.</p>
-                <p>View clippings per book below or get a random clipping by clicking the button.</p>
+                <p>View clippings by book, get a random clipping, or do a keyword/s search.</p>
 
-                <Button variant="primary" href="/random">Random Clipping!</Button>
+                <Row>
+                    <Col md={3} className="mb-3">
+                        <Button variant="primary" href="/random">Random Clipping!</Button>
+                    </Col>
+
+                    <Col md={9}>
+                        <InputGroup>
+                            <FormControl
+                                placeholder="Search..."
+                                aria-label="Keyword/s search"
+                                aria-describedby="search-btn"
+                                onChange={this.searchInputOnChange}
+                            />
+                            <Button variant="primary" id="search-btn" href={`/search/${this.state.searchString}`} disabled={this.state.searchString === ""}>
+                                Search
+                            </Button>
+                        </InputGroup>
+                    </Col>
+                </Row>
 
                 {
                     // display books by first letter
@@ -172,7 +199,7 @@ class Home extends Component {
                                                         state: { book: book }
                                                     }}>
                                                         {/* <img src={book.image} alt="Book cover" title={book.title + ' - ' + book.author} style={{ height: '98px', padding: 0, margin: 0 }} /> */}
-                                                        <Image className="book-cover" src={book.image} alt="Book cover" title={book.title} />
+                                                        <Image className="book-cover" src={book.image} alt="Book cover" title={`${book.title} by ${book.author}`} />
                                                 </Link>
                                             ))
                                         }

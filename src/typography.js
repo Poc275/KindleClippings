@@ -13,6 +13,9 @@ const typography = new Typography({
         h3: {
             color: "#FFFFFE",
         },
+        h4: {
+            color: "#FFFFFE",
+        },
         a: {
             backgroundImage: "none",
             textShadow: "none",

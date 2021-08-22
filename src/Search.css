@@ -1,0 +1,15 @@
+mark {
+    /* border-bottom: 5px solid #eebbc3; */
+}
+
+.search-heading {
+    display: inline-block;
+    border-bottom: 5px solid #eebbc3;
+    margin: 2rem 0 1rem 0;
+}
+
+.search-divider {
+    height: 1px;
+    margin: 1rem 0 2rem 0;
+    background: linear-gradient(90deg, rgba(40,44,52,0) 0%, rgba(238,187,195,1) 50%, rgba(40,44,52,0) 100%);
+}

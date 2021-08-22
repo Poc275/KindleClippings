@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import Random from './Random';
 import Home from './Home';
 import Book from './Book';
+import Search from './Search';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './custom.scss';
@@ -14,6 +15,7 @@ ReactDOM.render(
         <Route exact path='/' component={Home} />
         <Route path='/book/:bookId' component={Book} />
         <Route exact path='/random' component={Random} />
+        <Route path='/search/:query' component={Search} />
     </Router>, 
     document.getElementById('root')
 );
