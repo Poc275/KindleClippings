@@ -106,7 +106,7 @@ class Random extends Component {
   render() {
     return (
       <Container id="random-container">
-        <Row>
+        <Row className="mt-3">
           <Col sm={2} className="d-none d-sm-block">
             <img src={this.state.title ? Utilities.getBookCoverUrl(this.state.title) : null} 
               alt="book cover"
