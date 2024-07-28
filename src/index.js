@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import './index.css';
 import Random from './Random';
 import Home from './Home';
 import Book from './Book';
 import Search from './Search';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import './custom.scss';
+// just want the grid styles from bootstrap to prevent typography.js clashes
+import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import typography from './typography';
+
 
 ReactDOM.render(
     <Router>
