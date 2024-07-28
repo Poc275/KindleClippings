@@ -4,6 +4,10 @@ import twinPeaksTheme from 'typography-theme-twin-peaks';
 const typography = new Typography({
     ...twinPeaksTheme,
     overrideThemeStyles: () => ({
+        body: {
+            backgroundColor: "#282C34",
+            color: "#FFFFFE",
+        },
         h1: {
             color: "#FFFFFE",
         },
@@ -26,6 +30,9 @@ const typography = new Typography({
             paddingLeft: 0,
             borderLeft: "none",
         },
+        hr: {
+            borderTop: "1px solid #FFFFFE",
+        },
         'footer cite': {
             color: "#FFFFFE",
         },
@@ -37,9 +44,6 @@ const typography = new Typography({
                 borderLeft: "none",
             }
         }
-        // hr: {
-        //     borderTop: "1px solid #b8c1ec",
-        // },
     })
 });
 

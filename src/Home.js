@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Airtable from 'airtable';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -9,6 +8,7 @@ import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import './Home.css';
+import Utilities from './Util';
 
 class Home extends Component {
     constructor() {
@@ -24,13 +24,12 @@ class Home extends Component {
 
     async componentDidMount() {
         const books = await this.getBooks();
-        // console.log('getBooks() returned:', books);
 
         books.forEach(async book => {
             // check cache before fetching book info
-            if(sessionStorage.getItem(book.goodreadsId)) {
+            if(sessionStorage.getItem(book.GoodreadsId)) {
                 // console.log('Reading book from cache!');
-                const parsedBook = JSON.parse(sessionStorage.getItem(book.goodreadsId));
+                const parsedBook = JSON.parse(sessionStorage.getItem(book.GoodreadsId));
                 this.setState({
                     books: [...this.state.books, parsedBook]
                 });
@@ -38,7 +37,7 @@ class Home extends Component {
             } else {
                 // book not in cache, make API call
                 // console.log('Reading book from API');
-                const bookInfo = await this.getBookInfo(book.goodreadsId);
+                const bookInfo = await this.getBookInfo(book.GoodreadsId);
                 // console.log(bookInfo);
 
                 let description = "";
@@ -51,7 +50,7 @@ class Home extends Component {
                     const bookWithInfo = {
                         id: bookInfo.getElementsByTagName("id")[0].childNodes[0].nodeValue,
                         title: bookInfo.getElementsByTagName("title")[0].childNodes[0].nodeValue,
-                        originalTitle: book.title,
+                        originalTitle: book.Title,
                         author: bookInfo.getElementsByTagName("authors")[0].getElementsByTagName("author")[0].getElementsByTagName("name")[0].childNodes[0].nodeValue,
                         image: bookInfo.getElementsByTagName('image_url')[0].childNodes[0].nodeValue,
                         // year: bookInfo.getElementsByTagName("publication_year")[0].childNodes[0].nodeValue,
@@ -60,7 +59,7 @@ class Home extends Component {
                         description: description
                     };
 
-                    sessionStorage.setItem(book.goodreadsId, JSON.stringify(bookWithInfo));
+                    sessionStorage.setItem(book.GoodreadsId, JSON.stringify(bookWithInfo));
                     
                     this.setState({
                         books: [...this.state.books, bookWithInfo]
@@ -77,30 +76,29 @@ class Home extends Component {
     }
 
     getBooks() {
-        const base = new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_API_KEY}).base('appZ1EK6b3jNQEZs1');
-        const books = [];
+        const url = "https://kindleclippings.table.core.windows.net/books()";
+        const signature = Utilities.getSharedKeySignature("/kindleclippings/books()");
 
-        return new Promise((resolve, reject) => {
-            base('Index').select({
-                view: "Grid view",
-                sort: [{field: "Title"}]
-            }).eachPage(function page(records, fetchNextPage) {
-                records.forEach(function(record) {
-                    books.push({
-                        title: record.get('Title'),
-                        goodreadsId: record.get('GoodreadsId')
-                    });
-                });
-    
-                fetchNextPage();
-            }, function done(err) {
-                if(err) {
-                    console.error(err);
-                    reject(err);
-                }
-    
-                resolve(books);
-            });
+        return fetch(url, {
+            method: "GET",
+            headers: {
+                'Authorization': `SharedKeyLite kindleclippings:${signature}`,
+                'x-ms-version': '2021-04-10',
+                'x-ms-date': new Date().toUTCString(),
+                'Accept': 'application/json;odata=nometadata'
+            }
+        })
+        .then(res => {
+            // console.log(res);
+            return res.ok ? res.json() : null;
+        })
+        .then(data => {
+            // console.log(data);
+            return data?.value;
+        })
+        .catch(err => {
+            console.error(err);
+            return null;
         });
     }
 
@@ -158,7 +156,7 @@ class Home extends Component {
                                 aria-describedby="search-btn"
                                 onChange={this.searchInputOnChange}
                             />
-                            <Button variant="primary" id="search-btn" href={`/search/${this.state.searchString}`} disabled={this.state.searchString === ""}>
+                            <Button variant="link" id="search-btn" href={`/search/${this.state.searchString}`} disabled={this.state.searchString === ""}>
                                 Search
                             </Button>
                         </InputGroup>
@@ -195,7 +193,7 @@ class Home extends Component {
                                                 <Link 
                                                     key={book.id} 
                                                     to={{
-                                                        pathname: `/book/${book.title}`,
+                                                        pathname: `/book/${book.originalTitle}`,
                                                         state: { book: book }
                                                     }}>
                                                         {/* <img src={book.image} alt="Book cover" title={book.title + ' - ' + book.author} style={{ height: '98px', padding: 0, margin: 0 }} /> */}
